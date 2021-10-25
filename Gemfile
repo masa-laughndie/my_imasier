@@ -8,3 +8,8 @@ gem 'rails'
 gem 'thin'
 gem 'listen'
 gem 'sqlite3'
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+end
