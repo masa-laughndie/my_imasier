@@ -11,4 +11,4 @@ RUN bundle install
 
 EXPOSE 8888
 CMD rm -f tmp/pids/server.pid \
-  && bundle exec rails server -b 0.0.0.0 -p 8888
+  && bundle exec rails server -u thin -b 0.0.0.0 -p 8888
