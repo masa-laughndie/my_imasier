@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_022239) do
+ActiveRecord::Schema.define(version: 2021_10_26_063734) do
 
   create_table "download_rights_grantings", force: :cascade do |t|
     t.integer "right_count", null: false
@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 2021_10_26_022239) do
     t.string "interval_unit", null: false
     t.integer "valid_duration_number", null: false
     t.string "valid_duration_unit", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.integer "price", null: false
+    t.integer "contract_duration_number", null: false
+    t.string "contract_duration_unit", null: false
+    t.integer "seats_count", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

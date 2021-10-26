@@ -1,5 +1,5 @@
 class DownloadRightsGranting < ApplicationRecord
-  TIME_UNITS = %i(days months years).freeze
+  TIME_UNITS = %w(days months years).freeze
 
   composed_of :interval,
               class_name: 'Duration',
