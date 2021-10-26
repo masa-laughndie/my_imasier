@@ -5,13 +5,11 @@ class DownloadRightsPacking < ApplicationRecord
   validates :plan,                     presence: true
   validates :download_rights_granting, presence: true
   validates :grant_order,              presence: true, uniqueness: { scope: [:plan, :download_rights_granting] }
+  validate  :contract_duration_must_greater_then_or_equeal_download_rights_granting_interval
 
   class << self
     def execute_single_type!(_plan, _download_rights_granting)
       pack_number = _plan.contract_duration / _download_rights_granting.interval
-      unless pack_number.positive?
-        raise "plan contract duration must greater then or equeal to download rights granting interval"
-      end
 
       packs = pack_number.times.map do |n|
         DownloadRightsPacking.new(
@@ -22,6 +20,14 @@ class DownloadRightsPacking < ApplicationRecord
       end
 
       DownloadRightsPacking.import!(packs)
+    end
+  end
+
+  private
+
+  def contract_duration_must_greater_then_or_equeal_download_rights_granting_interval
+    unless (plan.contract_duration / download_rights_granting.interval).positive?
+      errors.add(:plan, :contract_duration_must_greater_then_or_equeal_download_rights_granting_interval)
     end
   end
 end
