@@ -8,8 +8,12 @@ gem 'rails'
 gem 'thin'
 gem 'listen'
 gem 'sqlite3'
+gem 'activerecord-import'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'pry-doc'
 end

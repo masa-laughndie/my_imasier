@@ -1,7 +1,9 @@
 class Plan < ApplicationRecord
   TIME_UNITS = %w(days months years).freeze
 
-  belongs_to :download_right_granting
+  has_many :download_rights_packings, -> { order(grant_order: :asc)},
+                                      dependent: :destroy
+  has_many :download_rights_grantings, through: :download_rights_packings
 
   composed_of :contract_duration,
               class_name: 'Duration',

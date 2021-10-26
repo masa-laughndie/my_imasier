@@ -1,6 +1,10 @@
 class DownloadRightsGranting < ApplicationRecord
   TIME_UNITS = %w(days months years).freeze
 
+  has_many :download_rights_packings, dependent: :destroy
+  has_many :plans, -> { distinct },
+                   through: :download_rights_packings
+
   composed_of :interval,
               class_name: 'Duration',
               mapping: [%w[interval_number number], %w[interval_unit unit]],
@@ -23,5 +27,9 @@ class DownloadRightsGranting < ApplicationRecord
 
   def max_carryover_right_count
     max_carryover_number * right_count
+  end
+
+  def carryoverable?
+    max_carryover_number.positive?
   end
 end

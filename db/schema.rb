@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_063734) do
+ActiveRecord::Schema.define(version: 2021_10_26_080349) do
 
   create_table "download_rights_grantings", force: :cascade do |t|
     t.integer "right_count", null: false
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(version: 2021_10_26_063734) do
     t.string "valid_duration_unit", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "download_rights_packings", force: :cascade do |t|
+    t.integer "plan_id", null: false
+    t.integer "download_rights_granting_id", null: false
+    t.integer "grant_order", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["download_rights_granting_id"], name: "index_download_rights_packings_on_download_rights_granting_id"
+    t.index ["plan_id", "download_rights_granting_id", "grant_order"], name: "index_download_rights_packings_for_single_order", unique: true
+    t.index ["plan_id"], name: "index_download_rights_packings_on_plan_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -36,4 +47,6 @@ ActiveRecord::Schema.define(version: 2021_10_26_063734) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "download_rights_packings", "download_rights_grantings"
+  add_foreign_key "download_rights_packings", "plans"
 end
