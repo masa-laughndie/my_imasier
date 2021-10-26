@@ -5,7 +5,7 @@ class DownloadRightsPacking < ApplicationRecord
   validates :plan,                     presence: true
   validates :download_rights_granting, presence: true
   validates :grant_order,              presence: true, uniqueness: { scope: [:plan, :download_rights_granting] }
-  validate  :contract_duration_must_greater_then_or_equeal_download_rights_granting_interval
+  validate  :contract_duration_must_greater_than_or_equeal_download_rights_granting_interval
 
   class << self
     def execute_single_type!(_plan, _download_rights_granting)
@@ -25,9 +25,9 @@ class DownloadRightsPacking < ApplicationRecord
 
   private
 
-  def contract_duration_must_greater_then_or_equeal_download_rights_granting_interval
+  def contract_duration_must_greater_than_or_equeal_download_rights_granting_interval
     unless (plan.contract_duration / download_rights_granting.interval).positive?
-      errors.add(:plan, :contract_duration_must_greater_then_or_equeal_download_rights_granting_interval)
+      errors.add(:plan, :contract_duration_must_greater_than_or_equeal_download_rights_granting_interval)
     end
   end
 end
