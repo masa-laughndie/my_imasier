@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_102904) do
+ActiveRecord::Schema.define(version: 2021_10_26_103543) do
+
+  create_table "contractings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "license_id", null: false
+    t.integer "payment_method_id", null: false
+    t.integer "price", null: false
+    t.datetime "contracted_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["license_id"], name: "index_contractings_on_license_id"
+    t.index ["payment_method_id"], name: "index_contractings_on_payment_method_id"
+    t.index ["user_id"], name: "index_contractings_on_user_id"
+  end
 
   create_table "download_rights_grantings", force: :cascade do |t|
     t.integer "right_count", null: false
@@ -65,6 +78,9 @@ ActiveRecord::Schema.define(version: 2021_10_26_102904) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "contractings", "licenses"
+  add_foreign_key "contractings", "payment_methods"
+  add_foreign_key "contractings", "users"
   add_foreign_key "download_rights_packings", "download_rights_grantings"
   add_foreign_key "download_rights_packings", "plans"
   add_foreign_key "licenses", "plans"

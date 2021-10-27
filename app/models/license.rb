@@ -1,6 +1,7 @@
 class License < ApplicationRecord
   belongs_to :user
   belongs_to :plan
+  has_one :contracting
 
   validates :user,                           presence: true
   validates :plan,                           presence: true

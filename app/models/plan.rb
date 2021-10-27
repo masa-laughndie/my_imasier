@@ -4,6 +4,7 @@ class Plan < ApplicationRecord
   has_many :download_rights_packings, -> { order(grant_order: :asc)},
                                       dependent: :destroy
   has_many :download_rights_grantings, through: :download_rights_packings
+  has_many :licenses
 
   validates :price,                        presence: true
   validates :contract_duration_number,     presence: true, numericality: { only_integer: true }
