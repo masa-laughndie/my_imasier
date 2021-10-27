@@ -35,6 +35,7 @@ class License < ApplicationRecord
     errors.add(:exercisable_from, :must_greater_then_exercisable_to)
   end
 
+  # TODO: 自動更新可能かの判定を Plan に追加してそれによって実行するか決めるようにする
   def _build_renewal_reservation
     build_renewal_reservation(renewal_plan: plan)
   end
