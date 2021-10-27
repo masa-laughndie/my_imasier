@@ -22,7 +22,10 @@ class License < ApplicationRecord
   before_create :_build_renewal_reservation
   before_create :build_self_renewal_path
   before_create :build_download_rights
-  before_create :build_seat_for_contract_user
+
+  def is_assigned!(user)
+    seats.create!(user: user)
+  end
 
   private
 
@@ -50,9 +53,5 @@ class License < ApplicationRecord
       )
       right_valid_from += rights_grating.interval
     end
-  end
-
-  def build_seat_for_contract_user
-    seats.build(user: user)
   end
 end

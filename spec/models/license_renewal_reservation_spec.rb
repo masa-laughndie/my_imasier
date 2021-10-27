@@ -9,6 +9,7 @@ RSpec.describe LicenseRenewalReservation, type: :model do
 
     before do
       Contracting.do!(user: user, plan: plan, payment_method: payment_method)
+      user.assaign!(user, user.contracted_licenses.last)
     end
 
     let(:license_renewal_reservation) { user.contracted_licenses.first.renewal_reservation }

@@ -34,8 +34,7 @@ class LicenseRenewalReservation < ApplicationRecord
       renewal_license = contracting.license
 
       create_renewal_path!(renewal_license)
-      # TODO: license 契約時の契約ユーザー追加をやめる
-      # copy_seats!(renewal_license)
+      copy_seats!(renewal_license)
 
       complete!
     end
