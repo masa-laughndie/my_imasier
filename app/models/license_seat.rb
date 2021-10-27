@@ -1,6 +1,7 @@
 class LicenseSeat < ApplicationRecord
   belongs_to :license
   belongs_to :user
+  has_many :downloadings
 
   validates :license,     presence: true
   validates :user,        presence: true
