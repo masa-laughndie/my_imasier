@@ -25,8 +25,8 @@ class License < ApplicationRecord
 
   delegate :seats_count, to: :plan
 
-  scope :expired_before, ->(time) { where(arel_table[:expired_at].lteq(time)) }
-  scope :expire_after, ->(time) { where(arel_table[:expired_at].gt(time)) }
+  scope :exercisable_to_before, ->(time) { where(arel_table[:exercisable_to].lteq(time)) }
+  scope :exercisable_to_after, ->(time) { where(arel_table[:exercisable_to].gt(time)) }
 
   def is_assigned!(user)
     seats.create!(user: user)
