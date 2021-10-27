@@ -9,6 +9,7 @@ gem 'thin'
 gem 'listen'
 gem 'sqlite3'
 gem 'activerecord-import'
+gem 'aasm'
 
 group :development, :test do
   gem 'rspec-rails'

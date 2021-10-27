@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_103543) do
+ActiveRecord::Schema.define(version: 2021_10_27_025402) do
 
   create_table "contractings", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 2021_10_26_103543) do
     t.index ["download_rights_granting_id"], name: "index_download_rights_packings_on_download_rights_granting_id"
     t.index ["plan_id", "download_rights_granting_id", "grant_order"], name: "index_download_rights_packings_for_single_order", unique: true
     t.index ["plan_id"], name: "index_download_rights_packings_on_plan_id"
+  end
+
+  create_table "license_renewal_reservations", force: :cascade do |t|
+    t.integer "license_id", null: false
+    t.integer "renewal_plan_id", null: false
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["license_id"], name: "index_license_renewal_reservations_on_license_id", unique: true
+    t.index ["renewal_plan_id"], name: "index_license_renewal_reservations_on_renewal_plan_id"
   end
 
   create_table "licenses", force: :cascade do |t|
@@ -83,6 +93,8 @@ ActiveRecord::Schema.define(version: 2021_10_26_103543) do
   add_foreign_key "contractings", "users"
   add_foreign_key "download_rights_packings", "download_rights_grantings"
   add_foreign_key "download_rights_packings", "plans"
+  add_foreign_key "license_renewal_reservations", "licenses"
+  add_foreign_key "license_renewal_reservations", "plans", column: "renewal_plan_id"
   add_foreign_key "licenses", "plans"
   add_foreign_key "licenses", "users"
 end

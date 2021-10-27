@@ -12,6 +12,7 @@ RSpec.describe Contracting, type: :model do
       subject
       expect(License.count).to eq(1)
       expect(Contracting.count).to eq(1)
+      expect(LicenseRenewalReservation.count).to eq(1)
     end
   end
 end
