@@ -1,8 +1,22 @@
 class LicenseRenewalReservation < ApplicationRecord
   include AASM
 
+  RENEWABLE_PERIOD = 3.days.freeze
+
   belongs_to :license
   belongs_to :renewal_plan, class_name: "Plan"
+
+  scope :to_execute, ->(time = Time.current) {
+    reserved
+      .joins(:license)
+      .merge(
+        License
+          # .not_canceled <= TODO: 対応する
+          # .not_suspended <= TODO: 対応する
+          .expire_after(time + 1.minute)
+          .expired_before(time + RENEWABLE_PERIOD)
+      )
+  }
 
   aasm column: :status do
     state :reserved, initial: true

@@ -23,8 +23,17 @@ class License < ApplicationRecord
   before_create :build_self_renewal_path
   before_create :build_download_rights
 
+  delegate :seats_count, to: :plan
+
+  scope :expired_before, ->(time) { where(arel_table[:expired_at].lteq(time)) }
+  scope :expire_after, ->(time) { where(arel_table[:expired_at].gt(time)) }
+
   def is_assigned!(user)
     seats.create!(user: user)
+  end
+
+  def renew!
+    renewal_reservation.execute!
   end
 
   private

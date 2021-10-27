@@ -25,6 +25,7 @@ RSpec.describe LicenseRenewalReservation, type: :model do
         expect(LicenseRenewalPath.count).to eq(3)
         expect(DownloadRight.count).to eq(24)
         expect(LicenseSeat.count).to eq(2)
+        expect(license_renewal_reservation.status).to eq("completed")
       end
     end
 
@@ -39,6 +40,7 @@ RSpec.describe LicenseRenewalReservation, type: :model do
         expect(LicenseRenewalPath.count).to eq(3)
         expect(DownloadRight.count).to eq(24)
         expect(LicenseSeat.count).to eq(2)
+        expect(license_renewal_reservation.status).to eq("completed")
       end
     end
   end
