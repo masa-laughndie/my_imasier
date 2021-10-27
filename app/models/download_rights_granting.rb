@@ -6,6 +6,7 @@ class DownloadRightsGranting < ApplicationRecord
                    through: :download_rights_packings
 
   validates :right_count,           presence: true, numericality: { only_integer: true }
+  # REVIEW: interval という概念がしっくりこない
   validates :interval_number,       presence: true, numericality: { only_integer: true }
   validates :interval_unit,         presence: true, inclusion: { in: TIME_UNITS }
   validates :valid_duration_number, presence: true, numericality: { only_integer: true }
