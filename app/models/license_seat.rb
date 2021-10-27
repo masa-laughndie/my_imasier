@@ -8,4 +8,6 @@ class LicenseSeat < ApplicationRecord
   validates :assigned_at, presence: true
 
   scope :being_assigned, -> { where(unassigned_at: nil) }
+
+  attribute :assigned_at, :datetime, default: -> { Time.current }
 end

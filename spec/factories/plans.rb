@@ -15,6 +15,14 @@ FactoryBot.define do
       contract_duration_unit { "years" }
     end
 
+    trait :single do
+      seats_count { 1 }
+    end
+
+    trait :multi do
+      seats_count { 5 }
+    end
+
     trait :with_download_rights_granting do
       after(:create) do |plan|
         _download_rights_granting = DownloadRightsGranting.first || FactoryBot.create(:download_rights_granting)

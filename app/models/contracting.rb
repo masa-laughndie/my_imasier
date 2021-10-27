@@ -9,12 +9,12 @@ class Contracting < ApplicationRecord
   attribute :contracted_at, :datetime, default: -> { Time.current }
 
   class << self
-    def do!(user:, plan:, payment_method:)
+    def do!(user:, plan:, payment_method:, exercise_from: Time.current)
       license = License.new(
         user: user,
         plan: plan,
-        exercisable_from: Time.current,
-        exercisable_to: Time.current + plan.contract_duration,
+        exercisable_from: exercise_from,
+        exercisable_to: exercise_from + plan.contract_duration,
       )
       contracting = Contracting.new(
         user: user,
@@ -23,6 +23,8 @@ class Contracting < ApplicationRecord
         price: plan.price,
       )
       contracting.save!
+
+      contracting
     end
   end
 end

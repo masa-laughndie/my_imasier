@@ -3,10 +3,10 @@ class License < ApplicationRecord
   belongs_to :plan
   has_one :contracting
   has_one :renewal_reservation, class_name: "LicenseRenewalReservation"
-  has_many :pathes_from_ancestral_licenses_and_itself, class_name: "LicenseRenewalPath", foreign_key: "to_license_id"
-  has_many :pathes_to_descendent_licenses_and_itself, class_name: "LicenseRenewalPath", foreign_key: "from_license_id"
-  has_many :ancestral_licenses_and_itself, through: :pathes_from_ancestral_licenses_and_itself, source: :from_license
-  has_many :descendent_licenses_and_itself, through: :pathes_to_descendent_licenses_and_itself, source: :to_license
+  has_many :paths_from_ancestral_licenses_and_itself, class_name: "LicenseRenewalPath", foreign_key: "to_license_id"
+  has_many :paths_to_descendent_licenses_and_itself, class_name: "LicenseRenewalPath", foreign_key: "from_license_id"
+  has_many :ancestral_licenses_and_itself, through: :paths_from_ancestral_licenses_and_itself, source: :from_license
+  has_many :descendent_licenses_and_itself, through: :paths_to_descendent_licenses_and_itself, source: :to_license
   has_many :download_rights
   has_many :seats, class_name: "LicenseSeat"
 
@@ -37,7 +37,7 @@ class License < ApplicationRecord
   end
 
   def build_self_renewal_path
-    pathes_from_ancestral_licenses_and_itself.build(from_license: self)
+    paths_from_ancestral_licenses_and_itself.build(from_license: self)
   end
 
   def build_download_rights
@@ -53,6 +53,6 @@ class License < ApplicationRecord
   end
 
   def build_seat_for_contract_user
-    seats.build(user: user, assigned_at: Time.current)
+    seats.build(user: user)
   end
 end
