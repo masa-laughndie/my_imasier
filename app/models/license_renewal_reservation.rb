@@ -11,10 +11,10 @@ class LicenseRenewalReservation < ApplicationRecord
       .joins(:license)
       .merge(
         License
-          # .not_canceled <= TODO: 対応する
-          # .not_suspended <= TODO: 対応する
           .expire_after(time + 1.minute)
           .expired_before(time + RENEWABLE_PERIOD)
+          # .not_canceled <= TODO: 対応する
+          # .not_suspended <= TODO: 対応する
       )
   }
 
