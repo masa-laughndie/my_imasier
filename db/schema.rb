@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_060356) do
+ActiveRecord::Schema.define(version: 2021_10_27_085123) do
 
   create_table "contractings", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -75,6 +75,17 @@ ActiveRecord::Schema.define(version: 2021_10_27_060356) do
     t.index ["renewal_plan_id"], name: "index_license_renewal_reservations_on_renewal_plan_id"
   end
 
+  create_table "license_seats", force: :cascade do |t|
+    t.integer "license_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "assigned_at", null: false
+    t.datetime "unassigned_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["license_id"], name: "index_license_seats_on_license_id"
+    t.index ["user_id"], name: "index_license_seats_on_user_id"
+  end
+
   create_table "licenses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "plan_id", null: false
@@ -117,6 +128,8 @@ ActiveRecord::Schema.define(version: 2021_10_27_060356) do
   add_foreign_key "license_renewal_paths", "licenses", column: "to_license_id"
   add_foreign_key "license_renewal_reservations", "licenses"
   add_foreign_key "license_renewal_reservations", "plans", column: "renewal_plan_id"
+  add_foreign_key "license_seats", "licenses"
+  add_foreign_key "license_seats", "users"
   add_foreign_key "licenses", "plans"
   add_foreign_key "licenses", "users"
 end

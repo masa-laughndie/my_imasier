@@ -23,6 +23,7 @@ RSpec.describe Contracting, type: :model do
         expect(LicenseRenewalPath.last.from_license_id).to eq(License.last.id)
         expect(DownloadRight.count).to eq(1)
         expect(License.find_by(user: user).download_rights.first.valid_from).to eq(License.find_by(user: user).exercisable_from)
+        expect(LicenseSeat.count).to eq(1)
       end
     end
 
@@ -42,6 +43,7 @@ RSpec.describe Contracting, type: :model do
         expect(LicenseRenewalPath.last.from_license_id).to eq(License.last.id)
         expect(DownloadRight.count).to eq(12)
         expect(License.find_by(user: user).download_rights.first.valid_from).to eq(License.find_by(user: user).exercisable_from)
+        expect(LicenseSeat.count).to eq(1)
       end
     end
   end

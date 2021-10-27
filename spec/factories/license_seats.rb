@@ -1,4 +1,4 @@
 FactoryBot.define do
-  factory :download_right do
+  factory :license_seat do
   end
 end

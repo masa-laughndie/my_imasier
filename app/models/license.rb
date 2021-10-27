@@ -8,6 +8,7 @@ class License < ApplicationRecord
   has_many :ancestral_licenses_and_itself, through: :pathes_from_ancestral_licenses_and_itself, source: :from_license
   has_many :descendent_licenses_and_itself, through: :pathes_to_descendent_licenses_and_itself, source: :to_license
   has_many :download_rights
+  has_many :seats, class_name: "LicenseSeat"
 
   validates :user,                           presence: true
   validates :plan,                           presence: true
@@ -21,6 +22,7 @@ class License < ApplicationRecord
   before_create :_build_renewal_reservation
   before_create :build_self_renewal_path
   before_create :build_download_rights
+  before_create :build_seat_for_contract_user
 
   private
 
@@ -48,5 +50,9 @@ class License < ApplicationRecord
       )
       right_valid_from += rights_grating.interval
     end
+  end
+
+  def build_seat_for_contract_user
+    seats.build(user: user, assigned_at: Time.current)
   end
 end
