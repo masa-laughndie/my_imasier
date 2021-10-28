@@ -11,6 +11,12 @@ class User < ApplicationRecord
     license.is_assigned!(user)
   end
 
+  def unassaign!(user, license)
+    raise "asssign permission is required." unless has_assign_permission?(license)
+
+    license.is_unassigned!(user)
+  end
+
   private
 
   def has_assign_permission?(license)

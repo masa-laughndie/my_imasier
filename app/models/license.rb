@@ -35,6 +35,10 @@ class License < ApplicationRecord
     seats.create!(user: user)
   end
 
+  def is_unassigned!(user)
+    seats.find_by(user: user).unassign!
+  end
+
   def renew!
     renewal_reservation.execute!
   end

@@ -25,6 +25,10 @@ class LicenseSeat < ApplicationRecord
     !being_assigned?
   end
 
+  def unassign!
+    update!(unassgined_at: Time.current)
+  end
+
   private
 
   def seats_count_must_be_within_limit
