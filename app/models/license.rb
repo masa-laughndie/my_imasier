@@ -24,9 +24,12 @@ class License < ApplicationRecord
   before_create :build_download_rights
 
   delegate :seats_count, to: :plan
+  delegate :change_renewal_plan_to, to: :renewal_reservation
 
+  scope :within_exercisable_duration, ->(time = Time.current) { where(arel_table[:exercisable_from].lt(time)).where(arel_table[:exercisable_to].gt(time)) }
   scope :exercisable_to_before, ->(time) { where(arel_table[:exercisable_to].lteq(time)) }
   scope :exercisable_to_after, ->(time) { where(arel_table[:exercisable_to].gt(time)) }
+  scope :download_right_flexible, ->(digest) { where(download_right_flexible_digest: digest) }
 
   def is_assigned!(user)
     seats.create!(user: user)
@@ -34,6 +37,30 @@ class License < ApplicationRecord
 
   def renew!
     renewal_reservation.execute!
+  end
+
+  def exercisable_download_rights(time = Time.current)
+    DownloadRight
+      .joins(:license)
+      .merge(download_right_flexible_licenses)
+      .exercisable(time)
+  end
+
+  def download_right_to_exercise(time = Time.current)
+    DownloadRight
+      .joins(:license)
+      .merge(download_right_flexible_licenses)
+      .exercisable(time)
+      .sorted_by_valid_to(:desc)
+      .last
+  end
+
+  def within_exercisable_duration?(time = Time.current)
+    exercisable_from < time && time < exercisable_to
+  end
+
+  def exercisable?(time = Time.current)
+    within_exercisable_duration?(time) && exercisable_download_rights(time).present?
   end
 
   private
@@ -63,5 +90,9 @@ class License < ApplicationRecord
       )
       right_valid_from += rights_grating.interval
     end
+  end
+
+  def download_right_flexible_licenses
+    License.download_right_flexible(download_right_flexible_digest)
   end
 end

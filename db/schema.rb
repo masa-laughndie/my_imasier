@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_093705) do
+ActiveRecord::Schema.define(version: 2021_10_27_133200) do
 
   create_table "contractings", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_093705) do
     t.integer "license_seat_id", null: false
     t.integer "item_id"
     t.datetime "downloaded_at"
-    t.boolean "download_right_exercise"
+    t.boolean "download_right_exercise", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["download_right_id"], name: "index_downloadings_on_download_right_id"

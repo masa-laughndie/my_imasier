@@ -15,7 +15,7 @@ RSpec.describe LicenseRenewalReservation, type: :model do
     let(:license_renewal_reservation) { user.contracted_licenses.first.renewal_reservation }
 
     context "when single seat license" do
-      let(:plan) { FactoryBot.create(:plan, :single, :contract_1_year, :with_download_rights_granting) }
+      let(:plan) { FactoryBot.create(:plan, :single, :contract_1_year) }
 
       it "increase some models count and their contents is appropriate" do
         subject
@@ -30,7 +30,7 @@ RSpec.describe LicenseRenewalReservation, type: :model do
     end
 
     context "when multi seat license" do
-      let(:plan) { FactoryBot.create(:plan, :multi, :contract_1_year, :with_download_rights_granting) }
+      let(:plan) { FactoryBot.create(:plan, :multi, :contract_1_year) }
 
       it "increase some models count and their contents is appropriate" do
         subject

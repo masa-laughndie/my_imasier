@@ -42,7 +42,8 @@ class LicenseRenewalReservation < ApplicationRecord
         user: license.user,
         plan: renewal_plan,
         payment_method: license.contracting.payment_method,
-        exercise_from: license.exercisable_to
+        exercise_from: license.exercisable_to,
+        download_right_flexible_digest: license.download_right_flexible_digest,
       )
 
       renewal_license = contracting.license
@@ -52,6 +53,12 @@ class LicenseRenewalReservation < ApplicationRecord
 
       complete!
     end
+  end
+
+  # TODO: 更新可能なプランであるかのバリデーションを追加する
+  def change_renewal_plan_to(new_renewal_plan)
+    raise "can change renewal plan when only reserved" unless reserved?
+    update!(renewal_plan: new_renewal_plan)
   end
 
   private

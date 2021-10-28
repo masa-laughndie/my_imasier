@@ -8,7 +8,7 @@ RSpec.describe Contracting, type: :model do
     let(:payment_method) { FactoryBot.create(:payment_method) }
 
     context "when plan's contract duration is 1 month" do
-      let(:plan) { FactoryBot.create(:plan, :contract_1_month, :with_download_rights_granting) }
+      let(:plan) { FactoryBot.create(:plan, :contract_1_month) }
 
       it "increase some models count and their contents is appropriate" do
         subject
@@ -27,7 +27,7 @@ RSpec.describe Contracting, type: :model do
     end
 
     context "when plan's contract duration is 1 year" do
-      let(:plan) { FactoryBot.create(:plan, :contract_1_year, :with_download_rights_granting) }
+      let(:plan) { FactoryBot.create(:plan, :contract_1_year) }
 
       it "increase some models count and their contents is appropriate" do
         subject
