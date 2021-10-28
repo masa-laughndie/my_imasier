@@ -6,6 +6,8 @@ class LicenseRenewalReservation < ApplicationRecord
   belongs_to :license
   belongs_to :renewal_plan, class_name: "Plan"
 
+  validate :seats_count_must_not_be_reduced
+
   scope :to_execute, ->(time = Time.current) {
     reserved
       .joins(:license)
@@ -62,6 +64,10 @@ class LicenseRenewalReservation < ApplicationRecord
   end
 
   private
+
+  def seats_count_must_not_be_reduced
+    errors.add(:seats_count, :must_not_be_reduced) if renewal_plan.seats_count < license.seats_count
+  end
 
   def create_renewal_path!(renewal_license)
     paths = license.ancestral_licenses_and_itself.map do |ancestral_license|
