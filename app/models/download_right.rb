@@ -9,6 +9,7 @@ class DownloadRight < ApplicationRecord
 
   scope :within_valid_duration, ->(time = Time.current) { where(arel_table[:valid_from].lt(time)).where(arel_table[:valid_to].gt(time)) }
   scope :exercisable, ->(time = Time.current) { within_valid_duration(time).not_exercised }
+  scope :sorted_by_valid_from, ->(order = :asc) { order(valid_from: order) }
   scope :sorted_by_valid_to, ->(order = :asc) { order(valid_to: order) }
 
   def within_valid_duration?(time = Time.current)
@@ -25,6 +26,10 @@ class DownloadRight < ApplicationRecord
 
   def exercisable?(time = Time.current)
     within_valid_duration?(time) && not_exercised?
+  end
+
+  def left_right_count
+    right_count - exercised_right_count
   end
 
   class << self

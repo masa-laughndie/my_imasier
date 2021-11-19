@@ -48,15 +48,46 @@ class License < ApplicationRecord
       .joins(:license)
       .merge(download_right_flexible_licenses)
       .exercisable(time)
+
+    # 繰越なしバージョン
+    # download_rights.exercisable(time)
   end
 
   def download_right_to_exercise(time = Time.current)
-    DownloadRight
-      .joins(:license)
-      .merge(download_right_flexible_licenses)
-      .exercisable(time)
-      .sorted_by_valid_to(:desc)
-      .last
+    exercisable_download_rights(time).sorted_by_valid_to(:desc).last
+  end
+
+  # limited_sub#downloaded_count_within_current_reset_term を不要にできる
+  def downloadable_count(time = Time.current)
+    exercisable_download_rights(time).map(&:left_right_count).sum
+  end
+
+  def downloaded_count_including_carryover_terms(time = Time.current)
+    exercisable_download_rights(time).map(&:exercised_right_count).sum
+  end
+
+  def downloaded_count_within_carryover_terms(time = Time.current)
+    exercisable_download_rights(time)
+      .where.not(id: recently_granted_download_right.id)
+      .map(&:exercised_right_count)
+      .sum
+  end
+
+  def max_downloadable_count_of_carryover(time = Time.current)
+    exercisable_download_rights(time)
+      .where.not(id: recently_granted_download_right.id)
+      .map(&:right_count)
+      .sum
+  end
+
+  def current_and_carryovered_downloadable_number(time = Time.current)
+    exercisable_download_rights(time)
+      .map(&:right_count)
+      .sum
+  end
+
+  def next_expire_downlodable_number(time = Time.current)
+    exercisable_download_rights(time).sorted_by_valid_to(:desc).last.left_right_count
   end
 
   def within_exercisable_duration?(time = Time.current)
@@ -68,6 +99,12 @@ class License < ApplicationRecord
   end
 
   private
+
+  def recently_granted_download_right
+    exercisable_download_rights
+      .sorted_by_valid_from(:desc)
+      .first
+  end
 
   def exercisable_from_must_greater_than_exercisable_to
     return if exercisable_from <= exercisable_to
