@@ -34,11 +34,13 @@ class DownloadRight < ApplicationRecord
   end
 
   class << self
+    # TODO: 以下は left_right_count が 0 であるやつを持ってくる形に変更
     def exercised
       exercised_right_ids = all.select(&:exercised?).map(&:id)
       DownloadRight.where(id: exercised_right_ids)
     end
 
+    # TODO: 以下は left_right_count が 0 でないやつを持ってくる形に変更
     def not_exercised
       not_exercised_right_ids = all.select(&:not_exercised?).map(&:id)
       DownloadRight.where(id: not_exercised_right_ids)
