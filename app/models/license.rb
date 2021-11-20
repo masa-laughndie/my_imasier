@@ -86,8 +86,17 @@ class License < ApplicationRecord
       .sum
   end
 
-  def next_expire_downlodable_number(time = Time.current)
+  def next_expire_downloadable_number(time = Time.current)
     exercisable_download_rights(time).sorted_by_valid_to(:desc).last.left_right_count
+  end
+
+  def next_valid_download_right(time = Time.current)
+    DownloadRight
+      .joins(:license)
+      .merge(download_right_flexible_licenses)
+      .valid_after(time)
+      .sorted_by_valid_from(:asc)
+      .first
   end
 
   def within_exercisable_duration?(time = Time.current)

@@ -8,6 +8,7 @@ class DownloadRight < ApplicationRecord
   validates :right_count, presence: true
 
   scope :within_valid_duration, ->(time = Time.current) { where(arel_table[:valid_from].lt(time)).where(arel_table[:valid_to].gt(time)) }
+  scope :valid_after, ->(time = Time.current) { where(arel_table[:valid_from].gt(time)) }
   scope :exercisable, ->(time = Time.current) { within_valid_duration(time).not_exercised }
   scope :sorted_by_valid_from, ->(order = :asc) { order(valid_from: order) }
   scope :sorted_by_valid_to, ->(order = :asc) { order(valid_to: order) }
